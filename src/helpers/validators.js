@@ -13,7 +13,7 @@
  * Если какие либо функции написаны руками (без использования библиотек) это не является ошибкой
  */
 
-import { allPass, compose, count, equals, prop, values, lte, lift, not, complement, length } from 'ramda'
+import { allPass, compose, count, equals, prop, values, gte, complement, length, converge, __ } from 'ramda'
 
 // получение цветов
 const getStarColor = prop('star')
@@ -59,19 +59,21 @@ const getRedCount = compose(count(isRed), getAllColors)
 const getOrangeCount = compose(count(isOrange), getAllColors)
 const getNotWhiteCount = compose(count(isNotWhite), getAllColors)
 
+// общие вспомогательные функции
+const compareResults = (functions) => converge(equals, functions)
 
 // вспомогательные функции для валидаторов
 const hasTwoGreenFigures = compose(equals(2), getGreenCount)
 const hasOneRedFigure = compose(equals(1), getRedCount)
-const areTriangleAndSquareOfSameColor = lift(equals)(getTriangleColor, getSquareColor)
+const areTriangleAndSquareOfSameColor = compareResults([getTriangleColor, getSquareColor])
 const areTriangleAndSquareNotWhite = allPass([isTriangleNotWhite, isSquareNotWhite])
 
 // функции валидаторов
-const hasTwoOrMoreGreenFigures = compose(lte(2), getGreenCount)
-const redCountEqualsBlueCount = lift(equals)(getRedCount, getBlueCount)
+const hasTwoOrMoreGreenFigures = compose(gte(__, 2), getGreenCount)
+const redCountEqualsBlueCount = compareResults([getRedCount, getBlueCount])
 const hasThreeNotWhiteFigures = compose(equals(3), getNotWhiteCount)
-const areAllFiguresOrange = lift(equals)(getFiguresCount, getOrangeCount)
-const areAllFiguresGreen = lift(equals)(getFiguresCount, getGreenCount)
+const areAllFiguresOrange = compareResults([getFiguresCount, getOrangeCount])
+const areAllFiguresGreen = compareResults([getFiguresCount, getGreenCount])
 
 // 1. Красная звезда, зеленый квадрат, все остальные белые.
 export const validateFieldN1 = allPass([isStarRed, isSquareGreen, isTriangleWhite, isCircleWhite])
