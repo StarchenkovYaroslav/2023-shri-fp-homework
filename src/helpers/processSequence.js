@@ -57,7 +57,7 @@ const mod3 = modulo(__, 3)
 const api = new Api();
 
 const convertNumberBase = api.get('https://api.tech/numbers/base')
-const getConvertedNumber = (number) => convertNumberBase({from: 2, to: 10, number: `${number}`})
+const getConvertedNumber = (number) => convertNumberBase({from: 10, to: 2, number: `${number}`})
 const getAnimal = (animalId) => api.get(`https://animals.tech/${animalId}`)({})
 const parseServerResponse = prop('result')
 
