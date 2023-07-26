@@ -36,7 +36,7 @@ const isOfValidLength = test(regLength)
 
 const isValueValid = allPass([isOfValidChars, isOfValidLength])
 const validate = value => new Promise((resolve, reject) => {
-  return isValueValid(value) ? resolve(value) : reject('validationError')
+  return isValueValid(value) ? resolve(value) : reject('ValidationError')
 })
 
 // обработка промиса
